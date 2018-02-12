@@ -1,0 +1,91 @@
+<p>Hello user! You are logged in!</p>
+<p>
+  <a [routerLink]="['/login']">Logout</a>
+</p>
+
+<div class="row">
+  <div class="col-md-6">
+    <h3>Bookshelves</h3>
+    <ul>
+      <li *ngFor="let b of bookshelves">
+        {{b.title}} -
+        <a (click)="deleteBookshelv(b.id)"> [Delete] </a>
+        <a [routerLink]="['/editBookshelf/'+b.id]"> [Edit] </a>
+      </li>
+    </ul>
+  </div>
+
+
+  <div class="col-md-6">
+    <h2>Add Bookshelf</h2>
+    <form name="form" (ngSubmit)="f.form.valid && addBookshelf()" #f="ngForm" novalidate>
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !bookshelfTitle.valid }">
+        <label for="bookshelfTitle">Bookshelf title</label>
+        <input type="text" class="form-control" name="bookshelfTitle" [(ngModel)]="model.bookshelfTitle" #bookshelfTitle="ngModel"
+          required />
+        <div *ngIf="f.submitted && !bookshelfTitle.valid" class="help-block">Title is required</div>
+      </div>
+      <div class="form-group">
+        <button [disabled]="bookshelfLoading" class="btn btn-primary">Add bookshelf</button>
+        <img *ngIf="bookshelfLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+        />
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+<div class="row">
+  <div class="col-md-6">
+    <h3>Books</h3>
+    <ul>
+      <li *ngFor="let b of books">
+        {{b.title}} by {{b.author}} ISBN:{{b.isbn}} Bookshelf:{{b.bookshelf_id}}
+        <a (click)="deleteBook(b.id)"> [Delete] </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="col-md-6">
+    <h2>Add Book</h2>
+    <form name="form" (ngSubmit)="bookForm.form.valid && addBook()" #bookForm="ngForm" novalidate>
+      <div class="form-group" [ngClass]="{ 'has-error': bookForm.submitted && !bookTitle.valid }">
+        <label for="bookTitle">Title</label>
+        <input type="text" class="form-control" name="bookTitle" [(ngModel)]="model.bookTitle" #bookTitle="ngModel"
+          required />
+        <div *ngIf="bookForm.submitted && !bookTitle.valid" class="help-block">Title is required</div>
+      </div>
+
+      <div class="form-group" [ngClass]="{ 'has-error': bookForm.submitted && !author.valid }">
+        <label for="author">Author</label>
+        <input type="text" class="form-control" name="author" [(ngModel)]="model.author" #author="ngModel"
+          required />
+        <div *ngIf="bookForm.submitted && !author.valid" class="help-block">Author is required</div>
+      </div>
+
+      <div class="form-group" [ngClass]="{ 'has-error': bookForm.submitted && !isbn.valid }">
+        <label for="isbn">ISBN</label>
+        <input type="text" class="form-control" name="isbn" [(ngModel)]="model.isbn" #isbn="ngModel"
+          required />
+        <div *ngIf="bookForm.submitted && !isbn.valid" class="help-block">ISBN is required</div>
+      </div>
+
+      <div class="form-group" [ngClass]="{ 'has-error': bookForm.submitted && !bookshelfId.valid }">
+        <label for="bookshelfId">Bookshelf ID</label>
+        <input type="text" class="form-control" name="bookshelfId" [(ngModel)]="model.bookshelfId" #bookshelfId="ngModel"
+          required />
+        <div *ngIf="bookForm.submitted && !bookshelfId.valid" class="help-block">BookshelfId is required</div>
+      </div>
+
+      <div class="form-group">
+        <button [disabled]="bookLoading" class="btn btn-primary">Add book</button>
+        <img *ngIf="bookLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+        />
+      </div>
+    </form>
+  </div>
+
+
+
+</div>
